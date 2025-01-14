@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二维下料优化求解器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .input-panel {
+            width: 300px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+
+        .display-panel {
+            flex: 1;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .rectangle-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .rectangle-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .rectangle-item button {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0;
+            padding: 2px 8px;
+            width: auto;
+        }
+
+        .rectangle-item button:hover {
+            background: #e0e0e0;
+        }
+
+        .rectangle-item .edit-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .rectangle-item .delete-btn {
+            background: #f44336;
+            color: white;
+        }
+
+        .rectangle-item button:hover {
+            opacity: 0.9;
+        }
+
+        #resultTabs {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .tab-button {
+            padding: 8px 16px;
+            border: none;
+            background: #ddd;
+            cursor: pointer;
+        }
+
+        .tab-button.active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        canvas {
+            border: 1px solid #ddd;
+            margin-top: 10px;
+            background-color: #fff;
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .status-bar {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="input-panel">
+        <h2>输入参数</h2>
+        <div class="form-group">
+            <label>大板长度范围:</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="number" id="minLength" value="45000" placeholder="最小长度">
+                <input type="number" id="maxLength" value="50000" placeholder="最大长度">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>大板宽度范围:</label>
+            <div style="display: flex; gap: 10px;">
+                <input type="number" id="minWidth" value="4000" placeholder="最小宽度">
+                <input type="number" id="maxWidth" value="4160" placeholder="最大宽度">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>添加子板:</label>
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <input type="number" id="rectLength" placeholder="长度">
+                <input type="number" id="rectWidth" placeholder="宽度">
+                <input type="number" id="rectCount" value="1" placeholder="数量" style="width: 60px;">
+            </div>
+            <button onclick="addRectangle()">添加子板</button>
+        </div>
+        <div class="rectangle-list" id="rectangleList"></div>
+        <button onclick="clearRectangles()">清空列表</button>
+        <button onclick="runPacking()">运行装箱算法</button>
+    </div>
+
+    <div class="display-panel">
+        <div id="resultTabs">
+            <div class="tab-buttons" id="tabButtons"></div>
+            <canvas id="displayCanvas"></canvas>
+        </div>
+        <div class="status-bar" id="statusBar"></div>
+    </div>
+
+    <script>
+        // 检查脚本加载
+        window.addEventListener('load', () => {
+            console.log('页面加载完成');
+            // 初始化一些默认值
+            document.getElementById('rectCount').value = '1';
+        });
+    </script>
+    <script src="js/Rectangle.js"></script>
+    <script src="js/BinPacker.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 
